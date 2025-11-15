@@ -1,0 +1,14 @@
+steps to coonect db
+1. npm install typeorm @nestjs/typeorm pg - ORM (Object Relational Mapper) — helps you interact with PostgreSQL using TypeScript classes instead of writing manual SQL queries.
+In app.module file - 
+imports: [TypeOrmModule.forRoot({
+    type: 'postgres',
+    entities:[],
+    synchronize: true,
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: 'admin123',
+   database:'nest-auth' 
+
+  })],
