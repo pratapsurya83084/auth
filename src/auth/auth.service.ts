@@ -19,13 +19,21 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { sub: user.id, email: user.email };
-    const token =  this.jwtService.sign(payload);
-   
+    // const payload = { sub: user.id, email: user.email };
+    // console.log(user.id,user.email);
+
+    const token = this.jwtService.sign(
+      {
+        sub: user.id,
+        email: user.email,
+      },
+      { expiresIn: '1d' },
+    );
+
     return {
       message: 'login successfull',
       success: true,
-      access_token:token,
+      access_token: token,
       user: { id: user.id, email: user.email },
     };
   }
@@ -49,4 +57,18 @@ export class AuthService {
       username: user.username,
     };
   }
+
+  //logout function with token blacklist
+ private blacklist = new Set<string>();
+
+  // Add token to blacklist on logout
+  async deleteRefreshToken(token: string) {
+    this.blacklist.add(token);
+  }
+
+  // Token is valid if NOT in blacklist
+  async isTokenValid(token: string) {
+    return !this.blacklist.has(token);
+  }
+
 }

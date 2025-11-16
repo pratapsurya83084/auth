@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         let expiresIn: number | import('ms').StringValue | undefined;
 
         if (raw === undefined || raw === null || raw === '') {
-          expiresIn = 3600; // default: 3600 seconds
+          expiresIn = '1h'; // default: 3600 seconds
         } else if (typeof raw === 'number') {
           expiresIn = raw;
         } else {
@@ -38,10 +38,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return {
           secret: config.get<string>('JWT_SECRET') || 'fallback_secret',
-          signOptions: {
-            // expiresIn is now correctly typed as number | import('ms').StringValue
-            expiresIn,
-          },
+          signOptions: {expiresIn},
         };
       },
       inject: [ConfigService],
